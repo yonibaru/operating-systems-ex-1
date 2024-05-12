@@ -1,0 +1,115 @@
+        -:    0:Source:main.c
+        -:    0:Graph:main.gcno
+        -:    0:Data:main.gcda
+        -:    0:Runs:1
+        -:    0:Source is newer than graph
+        -:    1:// C program for Dijkstra's single source shortest path
+        -:    2:// algorithm. The program is for adjacency matrix
+        -:    3:// representation of the graph
+        -:    4:
+        -:    5:#include <limits.h>
+        -:    6:#include <stdbool.h>
+        -:    7:#include <stdio.h>
+        -:    8:#include <stdlib.h>
+        -:    9:
+        -:   10:// Number of vertices in the graph
+        -:   11:#define V 9
+        -:   12:
+    #####:   13:void enterMatrix(int matrix[9][9]) {
+    #####:   14:    for (int i = 0; i < V; i++) {
+    #####:   15:        for (int j = 0; j < V; j++) {
+        -:   16:            int input;
+    #####:   17:            printf("Enter value for matrix[%d][%d]: ", i, j);
+    #####:   18:            if (scanf("%d", &input) != 1) { //Scanf *returns* 1 if the input is valid!
+    #####:   19:                printf("Error: Please enter an integer.\n");
+    #####:   20:                exit(1);
+        -:   21:            }
+    #####:   22:            if (input < 0) {
+    #####:   23:                printf("Error: Negative weights not allowed.\n");
+    #####:   24:                exit(1);
+        -:   25:            }
+    #####:   26:            matrix[i][j] = input;
+        -:   27:        }
+        -:   28:    }
+    #####:   29:}
+        -:   30:// A utility function to find the vertex with minimum
+        -:   31:// distance value, from the set of vertices not yet included
+        -:   32:// in shortest path tree
+        8:   33:int minDistance(int dist[], bool sptSet[]){
+        -:   34:    // Initialize min value
+        8:   35:    int min = INT_MAX, min_index;
+        -:   36:
+       80:   37:    for (int v = 0; v < V; v++)
+       72:   38:        if (sptSet[v] == false && dist[v] <= min)
+       12:   39:            min = dist[v], min_index = v;
+        -:   40:
+        8:   41:    return min_index;
+        -:   42:}
+        -:   43:
+        -:   44:// A utility function to print the constructed distance
+        -:   45:// array
+        1:   46:void printSolution(int dist[]){
+        1:   47:    printf("Vertex \t\t Distance from Source\n");
+       10:   48:    for (int i = 0; i < V; i++)
+        9:   49:        printf("%d \t\t\t\t %d\n", i, dist[i]);
+        1:   50:}
+        -:   51:
+        -:   52:// Function that implements Dijkstra's single source
+        -:   53:// shortest path algorithm for a graph represented using
+        -:   54:// adjacency matrix representation
+        1:   55:void dijkstra(int graph[V][V], int src){
+        -:   56:    int dist[V]; // The output array.  dist[i] will hold the
+        -:   57:                 // shortest
+        -:   58:    // distance from src to i
+        -:   59:
+        -:   60:    bool sptSet[V]; // sptSet[i] will be true if vertex i is
+        -:   61:                    // included in shortest
+        -:   62:    // path tree or shortest distance from src to i is
+        -:   63:    // finalized
+        -:   64:
+        -:   65:    // Initialize all distances as INFINITE and stpSet[] as
+        -:   66:    // false
+       10:   67:    for (int i = 0; i < V; i++)
+        9:   68:        dist[i] = INT_MAX, sptSet[i] = false;
+        -:   69:
+        -:   70:    // Distance of source vertex from itself is always 0
+        1:   71:    dist[src] = 0;
+        -:   72:
+        -:   73:    // Find shortest path for all vertices
+        9:   74:    for (int count = 0; count < V - 1; count++) {
+        -:   75:        // Pick the minimum distance vertex from the set of
+        -:   76:        // vertices not yet processed. u is always equal to
+        -:   77:        // src in the first iteration.
+        8:   78:        int u = minDistance(dist, sptSet);
+        -:   79:
+        -:   80:        // Mark the picked vertex as processed
+        8:   81:        sptSet[u] = true;
+        -:   82:
+        -:   83:        // Update dist value of the adjacent vertices of the
+        -:   84:        // picked vertex.
+       80:   85:        for (int v = 0; v < V; v++)
+        -:   86:
+        -:   87:            // Update dist[v] only if is not in sptSet,
+        -:   88:            // there is an edge from u to v, and total
+        -:   89:            // weight of path from src to  v through u is
+        -:   90:            // smaller than current value of dist[v]
+       72:   91:            if (!sptSet[v] && graph[u][v]
+       14:   92:                && dist[u] != INT_MAX
+       14:   93:                && dist[u] + graph[u][v] < dist[v])
+       10:   94:                dist[v] = dist[u] + graph[u][v];
+        -:   95:    }
+        -:   96:
+        -:   97:    // print the constructed distance array
+        1:   98:    printSolution(dist);
+        1:   99:}
+        -:  100:
+        -:  101:// driver's code
+        1:  102:int main(){
+        -:  103:    /* Let us create the example graph discussed above */
+        -:  104:    int graph[V][V];
+        -:  105:    enterMatrix(graph);
+        1:  106:    // Function call
+        -:  107:    dijkstra(graph, 0);
+        -:  108:
+        -:  109:    return 0;
+        -:  110:}
