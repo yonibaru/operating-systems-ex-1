@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_SCRIPT_LENGTH 1000
+#define MAX_SCRIPT_LENGTH 1024
 
 int main(int argc, char *argv[]) {
-    // Insure correct number of arguments are provided
+    // Ensure correct number of arguments are provided
     char newLine[200]; 
     if(argc == 4){
         // argv[1]: name, argv[2]: surname, argv[3]: phone #
