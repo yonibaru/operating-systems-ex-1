@@ -3,4 +3,4 @@
 
 long double poisson(long double lambda, int k);
 
-#endif /* POISSON_H */
+#endif
